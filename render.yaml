@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: statementflow
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    nodeVersion: 24
+    envVars:
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_ANON_KEY
+        sync: false
+      - key: VITE_AI_GATEWAY_URL
+        sync: false
+      - key: VITE_AI_API_KEY
+        sync: false
+      - key: VITE_APP_URL
+        sync: false

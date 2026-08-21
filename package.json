@@ -9,7 +9,7 @@
     "dev": "vite dev --port 3000",
     "generate-routes": "tsr generate",
     "build": "vite build",
-    "start": "npx @tanstack/react-start start",
+    "start": "node --experimental-loader @tanstack/react-start/loader dist/server/server.js",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui"

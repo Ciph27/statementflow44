@@ -6,44 +6,33 @@ import { Label } from '../components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { resetPassword } from '../lib/auth'
 
-export const Route = createFileRoute('/reset-password')({
-  component: ResetPasswordPage,
-  head: () => ({
-    title: 'Reset Password - StatementFlow',
-    description: 'Reset your StatementFlow password',
-    'og:title': 'Reset Password - StatementFlow',
-    'og:description': 'Reset your StatementFlow password',
-    'og:type': 'website',
-  }),
-})
+export default function ResetPasswordPage( {
+  const navigate = useNavigate(
+  const [email, setEmail] = useState(''
+  const [error, setError] = useState(''
+  const [success, setSuccess] = useState(false
+  const [loading, setLoading] = useState(false
 
-export default function ResetPasswordPage() {
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+  const handleSubmit = async (e: React.FormEvent => {
+    e.preventDefault(
+    setError(''
+    setLoading(true
 
     try {
-      const result = await resetPassword(email)
-      if (result.error) {
-        setError(result.error.message)
+      const result = await resetPassword(email
+      if (result.error {
+        setError(result.error.message
       } else {
-        setSuccess(true)
+        setSuccess(true
       }
-    } catch (err) {
-      setError('An unexpected error occurred')
+    } catch (err {
+      setError('An unexpected error occurred'
     } finally {
-      setLoading(false)
+      setLoading(false
     }
   }
 
-  if (success) {
+  if (success {
     return (
       <div className="min-h-screen bg-surface flex items-center justify-center px-4">
         <Card className="w-full max-w-md">
@@ -62,7 +51,7 @@ export default function ResetPasswordPage() {
           </CardContent>
         </Card>
       </div>
-    )
+    
   }
 
   return (
@@ -82,7 +71,7 @@ export default function ResetPasswordPage() {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e => setEmail(e.target.value}
                 required
               />
             </div>
@@ -90,7 +79,7 @@ export default function ResetPasswordPage() {
               <div className="text-sm text-danger bg-danger-light p-3 rounded-md">
                 {error}
               </div>
-            )}
+            }
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Sending...' : 'Send Reset Link'}
             </Button>
@@ -104,5 +93,12 @@ export default function ResetPasswordPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  
 }
+
+
+
+
+
+
+

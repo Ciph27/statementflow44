@@ -9,120 +9,110 @@ import { supabase } from '../lib/supabase'
 import { exportCashbook, previewExport } from '../lib/server-functions'
 import { Download, Eye, FileSpreadsheet, CheckCircle, Clock, XCircle } from 'lucide-react'
 
-export const Route = createFileRoute('/authenticated/exports')({
-  component: Exports,
-  head: () => ({
-    title: 'Exports - StatementFlow',
-    description: 'Generate and download Excel cashbook exports',
-    'og:title': 'Exports - StatementFlow',
-    'og:description': 'Generate and download Excel cashbook exports',
-    'og:type': 'website',
-  }),
-})
 
-export default function Exports() {
-  const [previewDialogOpen, setPreviewDialogOpen] = useState(false)
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
-  const [previewData, setPreviewData] = useState<any>(null)
-  const [exporting, setExporting] = useState(false)
-  const [previewing, setPreviewing] = useState(false)
-  const [templates, setTemplates] = useState<any[]>([])
-  const [transactions, setTransactions] = useState<any[]>([])
-  const [exports, setExports] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+export default function Exports( {
+  const [previewDialogOpen, setPreviewDialogOpen] = useState(false
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null
+  const [previewData, setPreviewData] = useState<any>(null
+  const [exporting, setExporting] = useState(false
+  const [previewing, setPreviewing] = useState(false
+  const [templates, setTemplates] = useState<any[]>([]
+  const [transactions, setTransactions] = useState<any[]>([]
+  const [exports, setExports] = useState<any[]>([]
+  const [loading, setLoading] = useState(true
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(( => {
+    const fetchData = async ( => {
       try {
-        const user = (await supabase.auth.getUser()).data.user
-        if (!user) throw new Error('Not authenticated')
+        const user = (await supabase.auth.getUser(.data.user
+        if (!user throw new Error('Not authenticated'
 
         const { data: templatesData, error: templatesError } = await supabase
-          .from('templates')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
+          .from('templates'
+          .select('*'
+          .eq('user_id', user.id
+          .order('created_at', { ascending: false }
 
-        if (templatesError) throw templatesError
-        setTemplates(templatesData || [])
+        if (templatesError throw templatesError
+        setTemplates(templatesData || []
 
         const { data: transactionsData, error: transactionsError } = await supabase
-          .from('transactions')
-          .select('id, date, description, merchant, debit, credit, category, side')
-          .eq('bank_statements.user_id', user.id)
-          .order('date', { ascending: false })
+          .from('transactions'
+          .select('id, date, description, merchant, debit, credit, category, side'
+          .eq('bank_statements.user_id', user.id
+          .order('date', { ascending: false }
 
-        if (transactionsError) throw transactionsError
-        setTransactions(transactionsData || [])
+        if (transactionsError throw transactionsError
+        setTransactions(transactionsData || []
 
         const { data: exportsData, error: exportsError } = await supabase
-          .from('exports')
-          .select('*, templates(name)')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
+          .from('exports'
+          .select('*, templates(name'
+          .eq('user_id', user.id
+          .order('created_at', { ascending: false }
 
-        if (exportsError) throw exportsError
-        setExports(exportsData || [])
-      } catch (error) {
-        console.error('Failed to fetch data:', error)
+        if (exportsError throw exportsError
+        setExports(exportsData || []
+      } catch (error {
+        console.error('Failed to fetch data:', error
       } finally {
-        setLoading(false)
+        setLoading(false
       }
     }
 
-    fetchData()
-  }, [])
+    fetchData(
+  }, []
 
-  const refetch = () => {
-    setLoading(true)
-    setTimeout(() => setLoading(false), 500)
+  const refetch = ( => {
+    setLoading(true
+    setTimeout(( => setLoading(false, 500
   }
 
-  const handlePreview = async (templateId: string) => {
-    setPreviewing(true)
-    setSelectedTemplate(templateId)
+  const handlePreview = async (templateId: string => {
+    setPreviewing(true
+    setSelectedTemplate(templateId
     try {
-      const transactionIds = transactions.map(t => t.id)
+      const transactionIds = transactions.map(t => t.id
       const result = await previewExport({
         templateId,
         transactionIds,
-      })
-
-      if (result.success) {
-        setPreviewData(result)
-        setPreviewDialogOpen(true)
       }
-    } catch (error) {
-      console.error('Preview failed:', error)
-      alert('Failed to generate preview')
+
+      if (result.success {
+        setPreviewData(result
+        setPreviewDialogOpen(true
+      }
+    } catch (error {
+      console.error('Preview failed:', error
+      alert('Failed to generate preview'
     } finally {
-      setPreviewing(false)
+      setPreviewing(false
     }
   }
 
-  const handleExport = async (templateId: string) => {
-    setExporting(true)
+  const handleExport = async (templateId: string => {
+    setExporting(true
     try {
-      const transactionIds = transactions.map(t => t.id)
+      const transactionIds = transactions.map(t => t.id
       const result = await exportCashbook({
         templateId,
         transactionIds,
-      })
-
-      if (result.success && result.downloadUrl) {
-        window.open(result.downloadUrl, '_blank')
-        refetch()
       }
-    } catch (error) {
-      console.error('Export failed:', error)
-      alert('Export failed. Please try again.')
+
+      if (result.success && result.downloadUrl {
+        window.open(result.downloadUrl, '_blank'
+        refetch(
+      }
+    } catch (error {
+      console.error('Export failed:', error
+      alert('Export failed. Please try again.'
     } finally {
-      setExporting(false)
+      setExporting(false
     }
   }
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
+  const getStatusBadge = (status: string => {
+    switch (status {
       case 'completed':
         return <Badge variant="success">Completed</Badge>
       case 'processing':
@@ -134,8 +124,8 @@ export default function Exports() {
     }
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
+  const getStatusIcon = (status: string => {
+    switch (status {
       case 'completed':
         return <CheckCircle className="h-4 w-4 text-success" />
       case 'processing':
@@ -173,13 +163,13 @@ export default function Exports() {
               <p className="text-text-muted mb-4">
                 Upload a template first to create exports
               </p>
-              <Button onClick={() => (window.location.href = '/templates')}>
+              <Button onClick={( => (window.location.href = '/templates'}>
                 Upload Template
               </Button>
             </div>
-          ) : (
+           : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {templates.map((template) => (
+              {templates.map((template => (
                 <Card key={template.id} className="hover:border-accent transition-colors">
                   <CardHeader>
                     <CardTitle className="text-lg">{template.name}</CardTitle>
@@ -193,7 +183,7 @@ export default function Exports() {
                         variant="outline"
                         size="sm"
                         className="flex-1"
-                        onClick={() => handlePreview(template.id)}
+                        onClick={( => handlePreview(template.id}
                         disabled={previewing}
                       >
                         <Eye className="h-4 w-4 mr-2" />
@@ -202,7 +192,7 @@ export default function Exports() {
                       <Button
                         size="sm"
                         className="flex-1"
-                        onClick={() => handleExport(template.id)}
+                        onClick={( => handleExport(template.id}
                         disabled={exporting}
                       >
                         <Download className="h-4 w-4 mr-2" />
@@ -211,9 +201,9 @@ export default function Exports() {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              }
             </div>
-          )}
+          }
         </CardContent>
       </Card>
 
@@ -229,7 +219,7 @@ export default function Exports() {
             <div className="text-center py-8 text-text-muted">
               No exports yet. Create your first export above.
             </div>
-          ) : (
+           : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -241,33 +231,33 @@ export default function Exports() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {exports.map((exp) => (
+                {exports.map((exp => (
                   <TableRow key={exp.id}>
                     <TableCell className="font-medium">
-                      {(exp.templates as any)?.name || 'Unknown'}
+                      {(exp.templates as any?.name || 'Unknown'}
                     </TableCell>
                     <TableCell>{exp.row_count}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        {getStatusIcon(exp.status)}
-                        {getStatusBadge(exp.status)}
+                        {getStatusIcon(exp.status}
+                        {getStatusBadge(exp.status}
                       </div>
                     </TableCell>
                     <TableCell className="text-sm text-text-muted">
-                      {new Date(exp.created_at).toLocaleString()}
+                      {new Date(exp.created_at.toLocaleString(}
                     </TableCell>
                     <TableCell>
                       {exp.status === 'completed' && (
                         <Button size="sm" variant="ghost">
                           <Download className="h-4 w-4" />
                         </Button>
-                      )}
+                      }
                     </TableCell>
                   </TableRow>
-                ))}
+                }
               </TableBody>
             </Table>
-          )}
+          }
         </CardContent>
       </Card>
 
@@ -288,7 +278,7 @@ export default function Exports() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold text-danger">
-                      ${previewData.totals.debit.toFixed(2)}
+                      ${previewData.totals.debit.toFixed(2}
                     </div>
                   </CardContent>
                 </Card>
@@ -298,7 +288,7 @@ export default function Exports() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold text-success">
-                      ${previewData.totals.credit.toFixed(2)}
+                      ${previewData.totals.credit.toFixed(2}
                     </div>
                   </CardContent>
                 </Card>
@@ -308,7 +298,7 @@ export default function Exports() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">
-                      ${previewData.totals.balance.toFixed(2)}
+                      ${previewData.totals.balance.toFixed(2}
                     </div>
                   </CardContent>
                 </Card>
@@ -324,25 +314,32 @@ export default function Exports() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {previewData.preview.map((item: any) => (
+                  {previewData.preview.map((item: any => (
                     <TableRow key={item.id}>
                       <TableCell>{item.date}</TableCell>
                       <TableCell className="max-w-xs truncate">{item.description}</TableCell>
                       <TableCell className={item.debit > 0 ? 'text-danger' : ''}>
-                        {item.debit > 0 ? `$${item.debit.toFixed(2)}` : '-'}
+                        {item.debit > 0 ? `$${item.debit.toFixed(2}` : '-'}
                       </TableCell>
                       <TableCell className={item.credit > 0 ? 'text-success' : ''}>
-                        {item.credit > 0 ? `$${item.credit.toFixed(2)}` : '-'}
+                        {item.credit > 0 ? `$${item.credit.toFixed(2}` : '-'}
                       </TableCell>
                       <TableCell>{item.category || 'Uncategorized'}</TableCell>
                     </TableRow>
-                  ))}
+                  }
                 </TableBody>
               </Table>
             </div>
-          )}
+          }
         </DialogContent>
       </Dialog>
     </div>
-  )
+  
 }
+
+
+
+
+
+
+

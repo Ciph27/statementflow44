@@ -9,136 +9,126 @@ import { supabase } from '../lib/supabase'
 import { updateTransactionCategory, updateTransactionDescription, saveMatchingRule, applyAllRules } from '../lib/server-functions'
 import { CreditCard, Wand, RefreshCw, Search, Filter } from 'lucide-react'
 
-export const Route = createFileRoute('/authenticated/transactions')({
-  component: Transactions,
-  head: () => ({
-    title: 'Transactions - StatementFlow',
-    description: 'Review, categorize, and edit your transactions',
-    'og:title': 'Transactions - StatementFlow',
-    'og:description': 'Review, categorize, and edit your transactions',
-    'og:type': 'website',
-  }),
-})
 
-export default function Transactions() {
-  const search = useSearch({ from: '/authenticated/transactions' })
+export default function Transactions( {
+  const search = useSearch({ from: '/authenticated/transactions' }
   const statementId = search.statementId as string | undefined
 
-  const [editingTransaction, setEditingTransaction] = useState<string | null>(null)
-  const [editDescription, setEditDescription] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [applyingRules, setApplyingRules] = useState(false)
-  const [transactions, setTransactions] = useState<any[]>([])
-  const [categories, setCategories] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [editingTransaction, setEditingTransaction] = useState<string | null>(null
+  const [editDescription, setEditDescription] = useState(''
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null
+  const [applyingRules, setApplyingRules] = useState(false
+  const [transactions, setTransactions] = useState<any[]>([]
+  const [categories, setCategories] = useState<any[]>([]
+  const [loading, setLoading] = useState(true
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(( => {
+    const fetchData = async ( => {
       try {
-        const user = (await supabase.auth.getUser()).data.user
-        if (!user) throw new Error('Not authenticated')
+        const user = (await supabase.auth.getUser(.data.user
+        if (!user throw new Error('Not authenticated'
 
         let query = supabase
-          .from('transactions')
-          .select('*, categories(name, side)')
-          .eq('bank_statements.user_id', user.id)
+          .from('transactions'
+          .select('*, categories(name, side'
+          .eq('bank_statements.user_id', user.id
 
-        if (statementId) {
-          query = query.eq('statement_id', statementId)
+        if (statementId {
+          query = query.eq('statement_id', statementId
         }
 
-        const { data: transData, error: transError } = await query.order('date', { ascending: false })
-        if (transError) throw transError
-        setTransactions(transData || [])
+        const { data: transData, error: transError } = await query.order('date', { ascending: false }
+        if (transError throw transError
+        setTransactions(transData || []
 
         const { data: catData, error: catError } = await supabase
-          .from('categories')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('name')
+          .from('categories'
+          .select('*'
+          .eq('user_id', user.id
+          .order('name'
 
-        if (catError) throw catError
-        setCategories(catData || [])
-      } catch (error) {
-        console.error('Failed to fetch data:', error)
+        if (catError throw catError
+        setCategories(catData || []
+      } catch (error {
+        console.error('Failed to fetch data:', error
       } finally {
-        setLoading(false)
+        setLoading(false
       }
     }
 
-    fetchData()
-  }, [statementId])
+    fetchData(
+  }, [statementId]
 
-  const refetch = () => {
-    setLoading(true)
+  const refetch = ( => {
+    setLoading(true
     // Re-fetch logic would go here
-    setTimeout(() => setLoading(false), 500)
+    setTimeout(( => setLoading(false, 500
   }
 
-  const handleSaveDescription = async (transactionId: string) => {
+  const handleSaveDescription = async (transactionId: string => {
     try {
       await updateTransactionDescription({
         transactionId,
         description: editDescription,
-      })
-      setEditingTransaction(null)
-      refetch()
-    } catch (error) {
-      console.error('Failed to update description:', error)
-      alert('Failed to update description')
+      }
+      setEditingTransaction(null
+      refetch(
+    } catch (error {
+      console.error('Failed to update description:', error
+      alert('Failed to update description'
     }
   }
 
-  const handleCategoryChange = async (transactionId: string, categoryId: string | null) => {
+  const handleCategoryChange = async (transactionId: string, categoryId: string | null => {
     try {
       await updateTransactionCategory({
         transactionId,
         categoryId,
-      })
-      refetch()
-    } catch (error) {
-      console.error('Failed to update category:', error)
-      alert('Failed to update category')
+      }
+      refetch(
+    } catch (error {
+      console.error('Failed to update category:', error
+      alert('Failed to update category'
     }
   }
 
-  const handleSaveAsRule = async (transactionId: string) => {
-    const transaction = transactions.find(t => t.id === transactionId)
-    if (!transaction || !transaction.category) return
+  const handleSaveAsRule = async (transactionId: string => {
+    const transaction = transactions.find(t => t.id === transactionId
+    if (!transaction || !transaction.category return
 
     try {
       await saveMatchingRule({
         transactionId,
         categoryId: transaction.category,
-      })
-      alert('Rule saved successfully')
-    } catch (error) {
-      console.error('Failed to save rule:', error)
-      alert('Failed to save rule')
+      }
+      alert('Rule saved successfully'
+    } catch (error {
+      console.error('Failed to save rule:', error
+      alert('Failed to save rule'
     }
   }
 
-  const handleApplyAllRules = async () => {
-    setApplyingRules(true)
+  const handleApplyAllRules = async ( => {
+    setApplyingRules(true
     try {
-      const result = await applyAllRules()
-      alert(`Applied rules to ${result.updatedCount} transactions`)
-      refetch()
-    } catch (error) {
-      console.error('Failed to apply rules:', error)
-      alert('Failed to apply rules')
+      const result = await applyAllRules(
+      alert(`Applied rules to ${result.updatedCount} transactions`
+      refetch(
+    } catch (error {
+      console.error('Failed to apply rules:', error
+      alert('Failed to apply rules'
     } finally {
-      setApplyingRules(false)
+      setApplyingRules(false
     }
   }
 
-  const getSideCategories = (side: string) => {
-    return categories.filter(c => c.side === side || c.side === 'both')
+  const getSideCategories = (side: string => {
+    return categories.filter(c => c.side === side || c.side === 'both'
   }
 
-  const getCategoryName = (categoryId: string | null) => {
-    if (!categoryId) return 'Uncategorized'
-    const category = categories.find(c => c.id === categoryId)
+  const getCategoryName = (categoryId: string | null => {
+    if (!categoryId return 'Uncategorized'
+    const category = categories.find(c => c.id === categoryId
     return category?.name || 'Unknown'
   }
 
@@ -165,11 +155,11 @@ export default function Transactions() {
             <Badge variant="success">Filtered</Badge>
             <span className="text-sm">Showing transactions for selected statement</span>
           </div>
-          <Button variant="ghost" size="sm" onClick={() => window.location.href = '/transactions'}>
+          <Button variant="ghost" size="sm" onClick={( => window.location.href = '/transactions'}>
             Clear Filter
           </Button>
         </div>
-      )}
+      }
 
       <Card>
         <CardHeader>
@@ -186,11 +176,11 @@ export default function Transactions() {
               <p className="text-text-muted mb-4">
                 Upload a bank statement to extract transactions automatically
               </p>
-              <Button onClick={() => (window.location.href = '/statements')}>
+              <Button onClick={( => (window.location.href = '/statements'}>
                 Upload Statement
               </Button>
             </div>
-          ) : (
+           : (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
@@ -208,7 +198,7 @@ export default function Transactions() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {transactions.map((transaction) => (
+                  {transactions.map((transaction => (
                     <TableRow key={transaction.id}>
                       <TableCell>{transaction.date}</TableCell>
                       <TableCell>
@@ -217,70 +207,70 @@ export default function Transactions() {
                             <input
                               type="text"
                               value={editDescription}
-                              onChange={(e) => setEditDescription(e.target.value)}
+                              onChange={(e => setEditDescription(e.target.value}
                               className="flex-1 px-2 py-1 border border-border rounded text-sm"
                               autoFocus
                             />
                             <Button
                               size="sm"
-                              onClick={() => handleSaveDescription(transaction.id)}
+                              onClick={( => handleSaveDescription(transaction.id}
                             >
                               Save
                             </Button>
                             <Button
                               size="sm"
                               variant="outline"
-                              onClick={() => setEditingTransaction(null)}
+                              onClick={( => setEditingTransaction(null}
                             >
                               Cancel
                             </Button>
                           </div>
-                        ) : (
+                         : (
                           <div className="group relative">
                             <div
                               className="cursor-pointer hover:bg-surface-alt p-1 rounded"
-                              onClick={() => {
-                                setEditingTransaction(transaction.id)
-                                setEditDescription(transaction.description)
+                              onClick={( => {
+                                setEditingTransaction(transaction.id
+                                setEditDescription(transaction.description
                               }}
                             >
                               {transaction.description}
                             </div>
                           </div>
-                        )}
+                        }
                       </TableCell>
                       <TableCell className="max-w-xs truncate">{transaction.merchant}</TableCell>
                       <TableCell className="text-sm text-text-muted">
                         {transaction.reference || '-'}
                       </TableCell>
                       <TableCell className={transaction.debit > 0 ? 'text-danger font-medium' : ''}>
-                        {transaction.debit > 0 ? `$${transaction.debit.toFixed(2)}` : '-'}
+                        {transaction.debit > 0 ? `$${transaction.debit.toFixed(2}` : '-'}
                       </TableCell>
                       <TableCell className={transaction.credit > 0 ? 'text-success font-medium' : ''}>
-                        {transaction.credit > 0 ? `$${transaction.credit.toFixed(2)}` : '-'}
+                        {transaction.credit > 0 ? `$${transaction.credit.toFixed(2}` : '-'}
                       </TableCell>
                       <TableCell className="text-sm">
-                        {transaction.balance ? `$${transaction.balance.toFixed(2)}` : '-'}
+                        {transaction.balance ? `$${transaction.balance.toFixed(2}` : '-'}
                       </TableCell>
                       <TableCell>
                         <select
                           value={transaction.category || ''}
-                          onChange={(e) => handleCategoryChange(transaction.id, e.target.value || null)}
+                          onChange={(e => handleCategoryChange(transaction.id, e.target.value || null}
                           className="px-2 py-1 border border-border rounded text-sm bg-surface"
                         >
                           <option value="">Uncategorized</option>
-                          {getSideCategories(transaction.side).map((cat) => (
+                          {getSideCategories(transaction.side.map((cat => (
                             <option key={cat.id} value={cat.id}>
                               {cat.name}
                             </option>
-                          ))}
+                          }
                         </select>
                       </TableCell>
                       <TableCell>
                         <Badge
                           variant={transaction.confidence > 0.8 ? 'success' : transaction.confidence > 0.5 ? 'warning' : 'secondary'}
                         >
-                          {Math.round(transaction.confidence * 100)}%
+                          {Math.round(transaction.confidence * 100}%
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -289,22 +279,29 @@ export default function Transactions() {
                             <Button
                               size="sm"
                               variant="ghost"
-                              onClick={() => handleSaveAsRule(transaction.id)}
+                              onClick={( => handleSaveAsRule(transaction.id}
                               title="Save as rule"
                             >
                               <Wand className="h-4 w-4" />
                             </Button>
-                          )}
+                          }
                         </div>
                       </TableCell>
                     </TableRow>
-                  ))}
+                  }
                 </TableBody>
               </Table>
             </div>
-          )}
+          }
         </CardContent>
       </Card>
     </div>
-  )
+  
 }
+
+
+
+
+
+
+

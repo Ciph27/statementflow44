@@ -10,161 +10,151 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { supabase } from '../lib/supabase'
 import { Sparkles, Plus, Edit, Trash2, ArrowUp, ArrowDown } from 'lucide-react'
 
-export const Route = createFileRoute('/authenticated/rules')({
-  component: Rules,
-  head: () => ({
-    title: 'Rules Engine - StatementFlow',
-    description: 'Manage automatic categorization rules',
-    'og:title': 'Rules Engine - StatementFlow',
-    'og:description': 'Manage automatic categorization rules',
-    'og:type': 'website',
-  }),
-})
 
-export default function Rules() {
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [editingRule, setEditingRule] = useState<any>(null)
-  const [keyword, setKeyword] = useState('')
-  const [isRegex, setIsRegex] = useState(false)
-  const [categoryId, setCategoryId] = useState('')
-  const [priority, setPriority] = useState(0)
-  const [rules, setRules] = useState<any[]>([])
-  const [categories, setCategories] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+export default function Rules( {
+  const [dialogOpen, setDialogOpen] = useState(false
+  const [editingRule, setEditingRule] = useState<any>(null
+  const [keyword, setKeyword] = useState(''
+  const [isRegex, setIsRegex] = useState(false
+  const [categoryId, setCategoryId] = useState(''
+  const [priority, setPriority] = useState(0
+  const [rules, setRules] = useState<any[]>([]
+  const [categories, setCategories] = useState<any[]>([]
+  const [loading, setLoading] = useState(true
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(( => {
+    const fetchData = async ( => {
       try {
-        const user = (await supabase.auth.getUser()).data.user
-        if (!user) throw new Error('Not authenticated')
+        const user = (await supabase.auth.getUser(.data.user
+        if (!user throw new Error('Not authenticated'
 
         const { data: rulesData, error: rulesError } = await supabase
-          .from('rules')
-          .select('*, categories(name)')
-          .eq('user_id', user.id)
-          .order('priority', { ascending: false })
+          .from('rules'
+          .select('*, categories(name'
+          .eq('user_id', user.id
+          .order('priority', { ascending: false }
 
-        if (rulesError) throw rulesError
-        setRules(rulesData || [])
+        if (rulesError throw rulesError
+        setRules(rulesData || []
 
         const { data: categoriesData, error: categoriesError } = await supabase
-          .from('categories')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('name')
+          .from('categories'
+          .select('*'
+          .eq('user_id', user.id
+          .order('name'
 
-        if (categoriesError) throw categoriesError
-        setCategories(categoriesData || [])
-      } catch (error) {
-        console.error('Failed to fetch data:', error)
+        if (categoriesError throw categoriesError
+        setCategories(categoriesData || []
+      } catch (error {
+        console.error('Failed to fetch data:', error
       } finally {
-        setLoading(false)
+        setLoading(false
       }
     }
 
-    fetchData()
-  }, [])
+    fetchData(
+  }, []
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async (e: React.FormEvent => {
+    e.preventDefault(
     try {
-      const user = (await supabase.auth.getUser()).data.user
-      if (!user) throw new Error('Not authenticated')
+      const user = (await supabase.auth.getUser(.data.user
+      if (!user throw new Error('Not authenticated'
 
-      if (editingRule) {
+      if (editingRule {
         const { error } = await supabase
-          .from('rules')
+          .from('rules'
           .update({
             keyword,
             is_regex: isRegex,
             category_id: categoryId,
             priority,
-          })
-          .eq('id', editingRule.id)
-          .eq('user_id', user.id)
+          }
+          .eq('id', editingRule.id
+          .eq('user_id', user.id
 
-        if (error) throw error
+        if (error throw error
       } else {
         const { error } = await supabase
-          .from('rules')
+          .from('rules'
           .insert({
             user_id: user.id,
             keyword,
             is_regex: isRegex,
             category_id: categoryId,
             priority,
-          })
+          }
 
-        if (error) throw error
+        if (error throw error
       }
 
-      setDialogOpen(false)
-      resetForm()
+      setDialogOpen(false
+      resetForm(
       // Refetch would go here
-    } catch (error) {
-      console.error('Failed to save rule:', error)
-      alert('Failed to save rule')
+    } catch (error {
+      console.error('Failed to save rule:', error
+      alert('Failed to save rule'
     }
   }
 
-  const handleEdit = (rule: any) => {
-    setEditingRule(rule)
-    setKeyword(rule.keyword)
-    setIsRegex(rule.is_regex)
-    setCategoryId(rule.category_id)
-    setPriority(rule.priority)
-    setDialogOpen(true)
+  const handleEdit = (rule: any => {
+    setEditingRule(rule
+    setKeyword(rule.keyword
+    setIsRegex(rule.is_regex
+    setCategoryId(rule.category_id
+    setPriority(rule.priority
+    setDialogOpen(true
   }
 
-  const handleDelete = async (ruleId: string) => {
-    if (!confirm('Are you sure you want to delete this rule?')) return
+  const handleDelete = async (ruleId: string => {
+    if (!confirm('Are you sure you want to delete this rule?' return
 
     try {
-      const user = (await supabase.auth.getUser()).data.user
-      if (!user) throw new Error('Not authenticated')
+      const user = (await supabase.auth.getUser(.data.user
+      if (!user throw new Error('Not authenticated'
 
       const { error } = await supabase
-        .from('rules')
-        .delete()
-        .eq('id', ruleId)
-        .eq('user_id', user.id)
+        .from('rules'
+        .delete(
+        .eq('id', ruleId
+        .eq('user_id', user.id
 
-      if (error) throw error
+      if (error throw error
       // Refetch would go here
-    } catch (error) {
-      console.error('Failed to delete rule:', error)
-      alert('Failed to delete rule')
+    } catch (error {
+      console.error('Failed to delete rule:', error
+      alert('Failed to delete rule'
     }
   }
 
-  const handlePriorityChange = async (ruleId: string, newPriority: number) => {
+  const handlePriorityChange = async (ruleId: string, newPriority: number => {
     try {
-      const user = (await supabase.auth.getUser()).data.user
-      if (!user) throw new Error('Not authenticated')
+      const user = (await supabase.auth.getUser(.data.user
+      if (!user throw new Error('Not authenticated'
 
       const { error } = await supabase
-        .from('rules')
-        .update({ priority: newPriority })
-        .eq('id', ruleId)
-        .eq('user_id', user.id)
+        .from('rules'
+        .update({ priority: newPriority }
+        .eq('id', ruleId
+        .eq('user_id', user.id
 
-      if (error) throw error
+      if (error throw error
       // Refetch would go here
-    } catch (error) {
-      console.error('Failed to update priority:', error)
+    } catch (error {
+      console.error('Failed to update priority:', error
     }
   }
 
-  const resetForm = () => {
-    setEditingRule(null)
-    setKeyword('')
-    setIsRegex(false)
-    setCategoryId('')
-    setPriority(0)
+  const resetForm = ( => {
+    setEditingRule(null
+    setKeyword(''
+    setIsRegex(false
+    setCategoryId(''
+    setPriority(0
   }
 
-  const getCategoryName = (categoryId: string) => {
-    const category = categories.find(c => c.id === categoryId)
+  const getCategoryName = (categoryId: string => {
+    const category = categories.find(c => c.id === categoryId
     return category?.name || 'Unknown'
   }
 
@@ -177,9 +167,9 @@ export default function Rules() {
             Create automatic categorization rules using keywords and patterns
           </p>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={(open) => {
-          setDialogOpen(open)
-          if (!open) resetForm()
+        <Dialog open={dialogOpen} onOpenChange={(open => {
+          setDialogOpen(open
+          if (!open resetForm(
         }}>
           <DialogTrigger asChild>
             <Button>
@@ -204,7 +194,7 @@ export default function Rules() {
                 <Input
                   id="keyword"
                   value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
+                  onChange={(e => setKeyword(e.target.value}
                   placeholder="e.g., SPAR, Shoprite, ^Transfer .*$"
                   required
                 />
@@ -214,7 +204,7 @@ export default function Rules() {
                   type="checkbox"
                   id="isRegex"
                   checked={isRegex}
-                  onChange={(e) => setIsRegex(e.target.checked)}
+                  onChange={(e => setIsRegex(e.target.checked}
                   className="rounded border-border"
                 />
                 <Label htmlFor="isRegex">Use regular expression</Label>
@@ -224,25 +214,25 @@ export default function Rules() {
                 <select
                   id="category"
                   value={categoryId}
-                  onChange={(e) => setCategoryId(e.target.value)}
+                  onChange={(e => setCategoryId(e.target.value}
                   className="w-full px-3 py-2 border border-border rounded-md bg-surface"
                   required
                 >
                   <option value="">Select a category</option>
-                  {categories.map((cat) => (
+                  {categories.map((cat => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
                     </option>
-                  ))}
+                  }
                 </select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="priority">Priority (higher = checked first)</Label>
+                <Label htmlFor="priority">Priority (higher = checked first</Label>
                 <Input
                   id="priority"
                   type="number"
                   value={priority}
-                  onChange={(e) => setPriority(parseInt(e.target.value))}
+                  onChange={(e => setPriority(parseInt(e.target.value}
                   min="0"
                 />
               </div>
@@ -269,12 +259,12 @@ export default function Rules() {
               <p className="text-text-muted mb-4">
                 Create rules to automatically categorize transactions based on keywords
               </p>
-              <Button onClick={() => setDialogOpen(true)}>
+              <Button onClick={( => setDialogOpen(true}>
                 <Plus className="h-4 w-4 mr-2" />
                 Add Rule
               </Button>
             </div>
-          ) : (
+           : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -286,7 +276,7 @@ export default function Rules() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {rules.map((rule) => (
+                {rules.map((rule => (
                   <TableRow key={rule.id}>
                     <TableCell className="font-medium font-mono text-sm">
                       {rule.keyword}
@@ -296,13 +286,13 @@ export default function Rules() {
                         {rule.is_regex ? 'Regex' : 'Keyword'}
                       </Badge>
                     </TableCell>
-                    <TableCell>{getCategoryName(rule.category_id)}</TableCell>
+                    <TableCell>{getCategoryName(rule.category_id}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => handlePriorityChange(rule.id, rule.priority + 1)}
+                          onClick={( => handlePriorityChange(rule.id, rule.priority + 1}
                         >
                           <ArrowUp className="h-4 w-4" />
                         </Button>
@@ -310,7 +300,7 @@ export default function Rules() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => handlePriorityChange(rule.id, Math.max(0, rule.priority - 1))}
+                          onClick={( => handlePriorityChange(rule.id, Math.max(0, rule.priority - 1}
                         >
                           <ArrowDown className="h-4 w-4" />
                         </Button>
@@ -321,26 +311,33 @@ export default function Rules() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => handleEdit(rule)}
+                          onClick={( => handleEdit(rule}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => handleDelete(rule.id)}
+                          onClick={( => handleDelete(rule.id}
                         >
                           <Trash2 className="h-4 w-4 text-danger" />
                         </Button>
                       </div>
                     </TableCell>
                   </TableRow>
-                ))}
+                }
               </TableBody>
             </Table>
-          )}
+          }
         </CardContent>
       </Card>
     </div>
-  )
+  
 }
+
+
+
+
+
+
+

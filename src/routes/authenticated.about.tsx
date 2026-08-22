@@ -2,18 +2,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { Info, Mail, Globe } from 'lucide-react'
 
-export const Route = createFileRoute('/authenticated/about')({
-  component: About,
-  head: () => ({
-    title: 'About - StatementFlow',
-    description: 'Learn more about StatementFlow and NEHANDA Technical',
-    'og:title': 'About - StatementFlow',
-    'og:description': 'Learn more about StatementFlow and NEHANDA Technical',
-    'og:type': 'website',
-  }),
-})
 
-export default function About() {
+export default function About( {
   return (
     <div className="space-y-6">
       <div>
@@ -179,5 +169,12 @@ export default function About() {
         </CardContent>
       </Card>
     </div>
-  )
+  
 }
+
+
+
+
+
+
+

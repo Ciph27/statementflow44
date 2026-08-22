@@ -2,28 +2,28 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 
-export default function AuthCallback() {
-  const navigate = useNavigate()
+export default function AuthCallback( {
+  const navigate = useNavigate(
 
-  useEffect(() => {
-    const handleAuthCallback = async () => {
-      const { data, error } = await supabase.auth.getSession()
+  useEffect(( => {
+    const handleAuthCallback = async ( => {
+      const { data, error } = await supabase.auth.getSession(
       
-      if (error) {
-        console.error('Auth callback error:', error)
-        router.navigate({ to: '/auth' })
+      if (error {
+        console.error('Auth callback error:', error
+        router.navigate({ to: '/auth' }
         return
       }
 
-      if (data.session) {
-        router.navigate({ to: '/dashboard' })
+      if (data.session {
+        router.navigate({ to: '/dashboard' }
       } else {
-        router.navigate({ to: '/auth' })
+        router.navigate({ to: '/auth' }
       }
     }
 
-    handleAuthCallback()
-  }, [router])
+    handleAuthCallback(
+  }, [router]
 
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center">
@@ -32,5 +32,12 @@ export default function AuthCallback() {
         <p className="mt-4 text-text-secondary">Processing authentication...</p>
       </div>
     </div>
-  )
+  
 }
+
+
+
+
+
+
+

@@ -6,47 +6,37 @@ import { Badge } from '../components/ui/badge'
 import { supabase } from '../lib/supabase'
 import { ClipboardList } from 'lucide-react'
 
-export const Route = createFileRoute('/authenticated/audit-log')({
-  component: AuditLog,
-  head: () => ({
-    title: 'Audit Log - StatementFlow',
-    description: 'View your account activity and changes',
-    'og:title': 'Audit Log - StatementFlow',
-    'og:description': 'View your account activity and changes',
-    'og:type': 'website',
-  }),
-})
 
-export default function AuditLog() {
-  const [auditLogs, setAuditLogs] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+export default function AuditLog( {
+  const [auditLogs, setAuditLogs] = useState<any[]>([]
+  const [loading, setLoading] = useState(true
 
-  useEffect(() => {
-    const fetchAuditLogs = async () => {
+  useEffect(( => {
+    const fetchAuditLogs = async ( => {
       try {
-        const user = (await supabase.auth.getUser()).data.user
-        if (!user) throw new Error('Not authenticated')
+        const user = (await supabase.auth.getUser(.data.user
+        if (!user throw new Error('Not authenticated'
 
         const { data, error } = await supabase
-          .from('audit_logs')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false })
-          .limit(100)
+          .from('audit_logs'
+          .select('*'
+          .eq('user_id', user.id
+          .order('created_at', { ascending: false }
+          .limit(100
 
-        if (error) throw error
-        setAuditLogs(data || [])
-      } catch (error) {
-        console.error('Failed to fetch audit logs:', error)
+        if (error throw error
+        setAuditLogs(data || []
+      } catch (error {
+        console.error('Failed to fetch audit logs:', error
       } finally {
-        setLoading(false)
+        setLoading(false
       }
     }
 
-    fetchAuditLogs()
-  }, [])
+    fetchAuditLogs(
+  }, []
 
-  const getActionBadge = (action: string) => {
+  const getActionBadge = (action: string => {
     const actionMap: Record<string, { variant: string; label: string }> = {
       'create': { variant: 'success', label: 'Created' },
       'update': { variant: 'warning', label: 'Updated' },
@@ -84,7 +74,7 @@ export default function AuditLog() {
                 Your account activity will appear here
               </p>
             </div>
-          ) : (
+           : (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -95,23 +85,30 @@ export default function AuditLog() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {auditLogs.map((log) => (
+                {auditLogs.map((log => (
                   <TableRow key={log.id}>
-                    <TableCell>{getActionBadge(log.action)}</TableCell>
+                    <TableCell>{getActionBadge(log.action}</TableCell>
                     <TableCell className="font-medium">{log.entity}</TableCell>
                     <TableCell className="text-sm text-text-muted max-w-xs truncate">
-                      {log.details ? JSON.stringify(log.details) : '-'}
+                      {log.details ? JSON.stringify(log.details : '-'}
                     </TableCell>
                     <TableCell className="text-sm text-text-muted">
-                      {new Date(log.created_at).toLocaleString()}
+                      {new Date(log.created_at.toLocaleString(}
                     </TableCell>
                   </TableRow>
-                ))}
+                }
               </TableBody>
             </Table>
-          )}
+          }
         </CardContent>
       </Card>
     </div>
-  )
+  
 }
+
+
+
+
+
+
+

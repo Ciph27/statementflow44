@@ -2,18 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { BarChart3 } from 'lucide-react'
 
-export const Route = createFileRoute('/authenticated/reports')({
-  component: Reports,
-  head: () => ({
-    title: 'Reports - StatementFlow',
-    description: 'View financial reports and analytics',
-    'og:title': 'Reports - StatementFlow',
-    'og:description': 'View financial reports and analytics',
-    'og:type': 'website',
-  }),
-})
-
-export default function Reports() {
+export default function Reports( {
   return (
     <div className="space-y-6">
       <div>
@@ -41,5 +30,12 @@ export default function Reports() {
         </CardContent>
       </Card>
     </div>
-  )
+  
 }
+
+
+
+
+
+
+

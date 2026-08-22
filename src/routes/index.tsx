@@ -3,7 +3,7 @@ import { Button } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { FileText, Sparkles, Shield, Zap } from 'lucide-react'
 
-export default function LandingPage() {
+export default function LandingPage( {
   return (
     <div className="min-h-screen bg-surface">
       {/* Hero Section */}
@@ -126,5 +126,12 @@ export default function LandingPage() {
         <p>Developed by NEHANDA Technical©</p>
       </footer>
     </div>
-  )
+  
 }
+
+
+
+
+
+
+

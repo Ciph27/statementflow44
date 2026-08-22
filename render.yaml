@@ -15,4 +15,4 @@ services:
       - key: VITE_AI_API_KEY
         sync: false
       - key: VITE_APP_URL
-        sync: false
+        value: https://statementflow-ihq9.onrender.com

@@ -9,6 +9,9 @@ import tailwindcss from '@tailwindcss/vite'
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
+  preview: {
+    allowedHosts: ['statementflow-ihq9.onrender.com', 'statementflow.onrender.com', 'localhost'],
+  },
 })
 
 export default config

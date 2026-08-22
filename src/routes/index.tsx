@@ -1,20 +1,9 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { Button } from '#/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
+import { Link } from 'react-router-dom'
+import { Button } from '../components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { FileText, Sparkles, Shield, Zap } from 'lucide-react'
 
-export const Route = createFileRoute('/')({
-  component: LandingPage,
-  head: () => ({
-    title: 'StatementFlow - Smart Bank Statement to Cashbook Automation',
-    description: 'Automatically extract transactions from bank statement PDFs and write them into your existing Excel cashbook template. Save hours of manual data entry with AI-powered automation.',
-    'og:title': 'StatementFlow - Smart Bank Statement to Cashbook Automation',
-    'og:description': 'Automatically extract transactions from bank statement PDFs and write them into your existing Excel cashbook template.',
-    'og:type': 'website',
-  }),
-})
-
-function LandingPage() {
+export default function LandingPage() {
   return (
     <div className="min-h-screen bg-surface">
       {/* Hero Section */}

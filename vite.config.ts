@@ -1,14 +1,10 @@
 import { defineConfig } from 'vite'
-import { devtools } from '@tanstack/devtools-vite'
-
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
-  plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
+  plugins: [tailwindcss(), viteReact()],
   preview: {
     allowedHosts: ['statementflow-ihq9.onrender.com', 'statementflow.onrender.com', 'localhost'],
   },

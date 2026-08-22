@@ -1,24 +1,13 @@
-import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { Button } from '#/components/ui/button'
-import { Input } from '#/components/ui/input'
-import { Label } from '#/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { signIn, signUp, signInWithGoogle } from '#/lib/auth'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { signIn, signUp, signInWithGoogle } from '../lib/auth'
 
-export const Route = createFileRoute('/auth')({
-  component: AuthPage,
-  head: () => ({
-    title: 'Sign In - StatementFlow',
-    description: 'Sign in to StatementFlow to manage your bank statement automation',
-    'og:title': 'Sign In - StatementFlow',
-    'og:description': 'Sign in to StatementFlow to manage your bank statement automation',
-    'og:type': 'website',
-  }),
-})
-
-function AuthPage() {
-  const router = useRouter()
+export default function AuthPage() {
+  const navigate = useNavigate()
   const [isSignUp, setIsSignUp] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

@@ -1,22 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { supabase } from '#/lib/supabase'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { supabase } from '../lib/supabase'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { FileText, CreditCard, Tag, TrendingUp, CheckCircle, Clock } from 'lucide-react'
 
-export const Route = createFileRoute('/authenticated/dashboard')({
-  component: Dashboard,
-  head: () => ({
-    title: 'Dashboard - StatementFlow',
-    description: 'View your financial overview and transaction statistics',
-    'og:title': 'Dashboard - StatementFlow',
-    'og:description': 'View your financial overview and transaction statistics',
-    'og:type': 'website',
-  }),
-})
-
-function Dashboard() {
+export default function Dashboard() {
   const [stats, setStats] = useState({
     statementsCount: 0,
     transactionsCount: 0,
@@ -278,7 +266,7 @@ function Dashboard() {
   )
 }
 
-function processMonthlyData(transactions: any[]) {
+export function processMonthlyData(transactions: any[]) {
   const monthlyMap = new Map<string, { income: number; expenses: number }>()
 
   transactions.forEach((t) => {

@@ -1,14 +1,14 @@
-import { createFileRoute } from '@tanstack/react-router'
+
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { Button } from '#/components/ui/button'
-import { Input } from '#/components/ui/input'
-import { Label } from '#/components/ui/label'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#/components/ui/dialog'
-import { Badge } from '#/components/ui/badge'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table'
-import { supabase } from '#/lib/supabase'
-import { analyzeTemplate } from '#/lib/server-functions'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog'
+import { Badge } from '../components/ui/badge'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
+import { supabase } from '../lib/supabase'
+import { analyzeTemplate } from '../lib/server-functions'
 import { FileSpreadsheet, Upload, Eye, Trash2, CheckCircle } from 'lucide-react'
 
 export const Route = createFileRoute('/authenticated/templates')({
@@ -22,7 +22,7 @@ export const Route = createFileRoute('/authenticated/templates')({
   }),
 })
 
-function Templates() {
+export default function Templates() {
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false)
   const [templateName, setTemplateName] = useState('')
   const [file, setFile] = useState<File | null>(null)

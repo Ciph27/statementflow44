@@ -1,8 +1,8 @@
 import * as React from "react"
-import { Outlet } from "@tanstack/react-router"
-import { Sidebar } from "#/components/sidebar"
+import { Outlet } from "react-router-dom"
+import Sidebar from "./sidebar"
 
-export function Layout() {
+export default function Layout() {
   return (
     <div className="flex min-h-screen bg-surface">
       <Sidebar />

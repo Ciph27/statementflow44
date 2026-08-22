@@ -1,9 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
+
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table'
-import { Badge } from '#/components/ui/badge'
-import { supabase } from '#/lib/supabase'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
+import { Badge } from '../components/ui/badge'
+import { supabase } from '../lib/supabase'
 import { ClipboardList } from 'lucide-react'
 
 export const Route = createFileRoute('/authenticated/audit-log')({
@@ -17,7 +17,7 @@ export const Route = createFileRoute('/authenticated/audit-log')({
   }),
 })
 
-function AuditLog() {
+export default function AuditLog() {
   const [auditLogs, setAuditLogs] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 

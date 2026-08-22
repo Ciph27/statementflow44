@@ -1,13 +1,9 @@
-import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { supabase } from '#/lib/supabase'
+import { supabase } from '../lib/supabase'
 
-export const Route = createFileRoute('/auth/callback')({
-  component: AuthCallback,
-})
-
-function AuthCallback() {
-  const router = useRouter()
+export default function AuthCallback() {
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleAuthCallback = async () => {

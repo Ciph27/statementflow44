@@ -1,13 +1,13 @@
-import { createFileRoute } from '@tanstack/react-router'
+
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { Button } from '#/components/ui/button'
-import { Input } from '#/components/ui/input'
-import { Label } from '#/components/ui/label'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#/components/ui/dialog'
-import { Badge } from '#/components/ui/badge'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table'
-import { supabase } from '#/lib/supabase'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog'
+import { Badge } from '../components/ui/badge'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
+import { supabase } from '../lib/supabase'
 import { Sparkles, Plus, Edit, Trash2, ArrowUp, ArrowDown } from 'lucide-react'
 
 export const Route = createFileRoute('/authenticated/rules')({
@@ -21,7 +21,7 @@ export const Route = createFileRoute('/authenticated/rules')({
   }),
 })
 
-function Rules() {
+export default function Rules() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingRule, setEditingRule] = useState<any>(null)
   const [keyword, setKeyword] = useState('')

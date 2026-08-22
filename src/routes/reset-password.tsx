@@ -1,10 +1,10 @@
-import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
+
 import { useState } from 'react'
-import { Button } from '#/components/ui/button'
-import { Input } from '#/components/ui/input'
-import { Label } from '#/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { resetPassword } from '#/lib/auth'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { resetPassword } from '../lib/auth'
 
 export const Route = createFileRoute('/reset-password')({
   component: ResetPasswordPage,
@@ -17,8 +17,8 @@ export const Route = createFileRoute('/reset-password')({
   }),
 })
 
-function ResetPasswordPage() {
-  const router = useRouter()
+export default function ResetPasswordPage() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)

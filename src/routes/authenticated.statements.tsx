@@ -1,16 +1,16 @@
-import { createFileRoute } from '@tanstack/react-router'
+
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { Button } from '#/components/ui/button'
-import { Input } from '#/components/ui/input'
-import { Label } from '#/components/ui/label'
-import { Badge } from '#/components/ui/badge'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#/components/ui/dialog'
-import { supabase } from '#/lib/supabase'
-import { parseStatement } from '#/lib/server-functions'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Badge } from '../components/ui/badge'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog'
+import { supabase } from '../lib/supabase'
+import { parseStatement } from '../lib/server-functions'
 import { FileText, Upload, CheckCircle, Clock, XCircle, Eye } from 'lucide-react'
-import { Link } from '@tanstack/react-router'
+import { Link } from 'react-router-dom'
 
 export const Route = createFileRoute('/authenticated/statements')({
   component: Statements,
@@ -23,7 +23,7 @@ export const Route = createFileRoute('/authenticated/statements')({
   }),
 })
 
-function Statements() {
+export default function Statements() {
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false)
   const [bankName, setBankName] = useState('')
   const [period, setPeriod] = useState('')

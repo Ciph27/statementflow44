@@ -1,5 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { Info, Mail, Globe } from 'lucide-react'
 
 export const Route = createFileRoute('/authenticated/about')({
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/authenticated/about')({
   }),
 })
 
-function About() {
+export default function About() {
   return (
     <div className="space-y-6">
       <div>

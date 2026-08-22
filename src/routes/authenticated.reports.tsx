@@ -1,5 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { BarChart3 } from 'lucide-react'
 
 export const Route = createFileRoute('/authenticated/reports')({
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/authenticated/reports')({
   }),
 })
 
-function Reports() {
+export default function Reports() {
   return (
     <div className="space-y-6">
       <div>

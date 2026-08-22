@@ -1,18 +1,18 @@
 import * as React from "react"
-import { Link, useRouter } from "@tanstack/react-router"
+import { Link, useNavigate } from "react-router-dom"
 import { LayoutDashboard, FileText, CreditCard, Tag, Sparkles, FileSpreadsheet, BarChart3, Download, ClipboardList, Settings, Info, LogOut, Menu, X } from "lucide-react"
-import { cn } from "#/lib/utils"
-import { signOut } from "#/lib/auth"
+import { cn } from "../lib/utils"
+import { signOut } from "../lib/auth"
 
 const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Statements", href: "/statements", icon: FileText },
-  { name: "Transactions", href: "/transactions", icon: CreditCard },
-  { name: "Categories", href: "/categories", icon: Tag },
-  { name: "Rules Engine", href: "/rules", icon: Sparkles },
-  { name: "Templates", href: "/templates", icon: FileSpreadsheet },
-  { name: "Reports", href: "/reports", icon: BarChart3 },
-  { name: "Exports", href: "/exports", icon: Download },
+  { name: "Dashboard", href: "/authenticated/dashboard", icon: LayoutDashboard },
+  { name: "Statements", href: "/authenticated/statements", icon: FileText },
+  { name: "Transactions", href: "/authenticated/transactions", icon: CreditCard },
+  { name: "Categories", href: "/authenticated/categories", icon: Tag },
+  { name: "Rules Engine", href: "/authenticated/rules", icon: Sparkles },
+  { name: "Templates", href: "/authenticated/templates", icon: FileSpreadsheet },
+  { name: "Reports", href: "/authenticated/reports", icon: BarChart3 },
+  { name: "Exports", href: "/authenticated/exports", icon: Download },
   { name: "Audit Log", href: "/audit-log", icon: ClipboardList },
   { name: "Settings", href: "/settings", icon: Settings },
   { name: "About", href: "/about", icon: Info },
@@ -22,14 +22,14 @@ interface SidebarProps {
   className?: string
 }
 
-export function Sidebar({ className }: SidebarProps) {
+export default function Sidebar({ className }: SidebarProps) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const router = useRouter()
-  const currentPath = router.state.location.pathname
+  const navigate = useNavigate()
+  const currentPath = window.location.pathname
 
   const handleSignOut = async () => {
     await signOut()
-    router.navigate({ to: "/auth" })
+    navigate("/auth")
   }
 
   return (

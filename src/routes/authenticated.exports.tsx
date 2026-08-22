@@ -1,12 +1,12 @@
-import { createFileRoute } from '@tanstack/react-router'
+
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { Button } from '#/components/ui/button'
-import { Badge } from '#/components/ui/badge'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#/components/ui/table'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#/components/ui/dialog'
-import { supabase } from '#/lib/supabase'
-import { exportCashbook, previewExport } from '#/lib/server-functions'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Button } from '../components/ui/button'
+import { Badge } from '../components/ui/badge'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog'
+import { supabase } from '../lib/supabase'
+import { exportCashbook, previewExport } from '../lib/server-functions'
 import { Download, Eye, FileSpreadsheet, CheckCircle, Clock, XCircle } from 'lucide-react'
 
 export const Route = createFileRoute('/authenticated/exports')({
@@ -20,7 +20,7 @@ export const Route = createFileRoute('/authenticated/exports')({
   }),
 })
 
-function Exports() {
+export default function Exports() {
   const [previewDialogOpen, setPreviewDialogOpen] = useState(false)
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
   const [previewData, setPreviewData] = useState<any>(null)

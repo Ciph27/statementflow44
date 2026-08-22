@@ -1,13 +1,13 @@
-import { createFileRoute } from '@tanstack/react-router'
+
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#/components/ui/card'
-import { Button } from '#/components/ui/button'
-import { Input } from '#/components/ui/input'
-import { Label } from '#/components/ui/label'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '#/components/ui/dialog'
-import { supabase } from '#/lib/supabase'
-import { signOut, updatePassword } from '#/lib/auth'
-import { useRouter } from '@tanstack/react-router'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Button } from '../components/ui/button'
+import { Input } from '../components/ui/input'
+import { Label } from '../components/ui/label'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog'
+import { supabase } from '../lib/supabase'
+import { signOut, updatePassword } from '../lib/auth'
+import { useNavigate } from 'react-router-dom'
 import { Settings, User, Lock, LogOut, KeyRound } from 'lucide-react'
 
 export const Route = createFileRoute('/authenticated/settings')({
@@ -21,8 +21,8 @@ export const Route = createFileRoute('/authenticated/settings')({
   }),
 })
 
-function SettingsPage() {
-  const router = useRouter()
+export default function SettingsPage() {
+  const navigate = useNavigate()
   const [passwordDialogOpen, setPasswordDialogOpen] = useState(false)
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')

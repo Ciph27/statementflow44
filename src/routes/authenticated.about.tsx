@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Info, Mail, Globe } from 'lucide-react'
 
 
-export default function About( {
+export default function About() {
   return (
     <div className="space-y-6">
       <div>
@@ -169,12 +169,5 @@ export default function About( {
         </CardContent>
       </Card>
     </div>
-  
+  )
 }
-
-
-
-
-
-
-

@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { FileText, CreditCard, Tag, TrendingUp, CheckCircle, Clock } from 'lucide-react'
 
-export default function Dashboard( {
+export default function Dashboard() {
   const [stats, setStats] = useState({
     statementsCount: 0,
     transactionsCount: 0,
@@ -12,57 +12,57 @@ export default function Dashboard( {
     categoriesCount: 0,
     monthlyCashFlow: [],
     recentStatements: [],
-  }
-  const [loading, setLoading] = useState(true
+  })
+  const [loading, setLoading] = useState(true)
 
-  useEffect(( => {
-    const fetchStats = async ( => {
+  useEffect(() => {
+    const fetchStats = async () => {
       try {
-        const user = (await supabase.auth.getUser(.data.user
-        if (!user throw new Error('Not authenticated'
+        const user = (await supabase.auth.getUser()).data.user
+        if (!user) throw new Error('Not authenticated')
 
         // Get total statements
         const { count: statementsCount } = await supabase
-          .from('bank_statements'
-          .select('*', { count: 'exact', head: true }
-          .eq('user_id', user.id
+          .from('bank_statements')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id)
 
         // Get total transactions
         const { count: transactionsCount } = await supabase
-          .from('transactions'
-          .select('*', { count: 'exact', head: true }
-          .eq('bank_statements.user_id', user.id
+          .from('transactions')
+          .select('*', { count: 'exact', head: true })
+          .eq('bank_statements.user_id', user.id)
 
         // Get categorized transactions
         const { count: categorizedCount } = await supabase
-          .from('transactions'
-          .select('*', { count: 'exact', head: true }
-          .eq('bank_statements.user_id', user.id
-          .not('category', 'is', null
+          .from('transactions')
+          .select('*', { count: 'exact', head: true })
+          .eq('bank_statements.user_id', user.id)
+          .not('category', 'is', null)
 
         // Get total categories
         const { count: categoriesCount } = await supabase
-          .from('categories'
-          .select('*', { count: 'exact', head: true }
-          .eq('user_id', user.id
+          .from('categories')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id)
 
         // Get monthly cash flow data
         const { data: monthlyData } = await supabase
-          .from('transactions'
-          .select('date, debit, credit'
-          .eq('bank_statements.user_id', user.id
-          .order('date', { ascending: true }
+          .from('transactions')
+          .select('date, debit, credit')
+          .eq('bank_statements.user_id', user.id)
+          .order('date', { ascending: true })
 
         // Process monthly data
-        const monthlyCashFlow = processMonthlyData(monthlyData || []
+        const monthlyCashFlow = processMonthlyData(monthlyData || [])
 
         // Get recent statements
         const { data: recentStatements } = await supabase
-          .from('bank_statements'
-          .select('*'
-          .eq('user_id', user.id
-          .order('created_at', { ascending: false }
-          .limit(5
+          .from('bank_statements')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(5)
 
         setStats({
           statementsCount: statementsCount || 0,
@@ -71,19 +71,19 @@ export default function Dashboard( {
           categoriesCount: categoriesCount || 0,
           monthlyCashFlow,
           recentStatements: recentStatements || [],
-        }
-      } catch (error {
-        console.error('Failed to fetch stats:', error
+        })
+      } catch (error) {
+        console.error('Failed to fetch stats:', error)
       } finally {
-        setLoading(false
+        setLoading(false)
       }
     }
 
-    fetchStats(
-  }, []
+    fetchStats()
+  }, [])
 
   const categorizationAccuracy = stats.transactionsCount > 0
-    ? Math.round((stats.categorizedCount / stats.transactionsCount * 100
+    ? Math.round((stats.categorizedCount / stats.transactionsCount) * 100)
     : 0
 
   return (
@@ -177,9 +177,9 @@ export default function Dashboard( {
             <div className="text-center py-8 text-text-muted">
               No statements uploaded yet. Upload your first bank statement to get started.
             </div>
-           : (
+           ) : (
             <div className="space-y-4">
-              {stats.recentStatements.map((statement => (
+              {stats.recentStatements.map((statement) => (
                 <div key={statement.id} className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div className="flex items-center gap-4">
                     <div className="p-2 bg-surface-alt rounded-lg">
@@ -199,25 +199,25 @@ export default function Dashboard( {
                             <CheckCircle className="h-3 w-3 text-success" />
                             Completed
                           </span>
-                        }
+                        )}
                         {statement.status === 'processing' && (
                           <span className="flex items-center gap-1">
                             <Clock className="h-3 w-3 text-warning" />
                             Processing
                           </span>
-                        }
+                        )}
                         {statement.status === 'failed' && (
                           <span className="flex items-center gap-1 text-danger">
                             Failed
                           </span>
-                        }
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
-              }
+              ))}
             </div>
-          }
+          )}
         </CardContent>
       </Card>
 
@@ -263,39 +263,32 @@ export default function Dashboard( {
         </CardContent>
       </Card>
     </div>
-  
+  )
 }
 
-export function processMonthlyData(transactions: any[] {
-  const monthlyMap = new Map<string, { income: number; expenses: number }>(
+export function processMonthlyData(transactions: any[]) {
+  const monthlyMap = new Map<string, { income: number; expenses: number }>()
 
-  transactions.forEach((t => {
-    const date = new Date(t.date
-    const monthKey = date.toLocaleString('default', { month: 'short', year: 'numeric' }
+  transactions.forEach((t) => {
+    const date = new Date(t.date)
+    const monthKey = date.toLocaleString('default', { month: 'short', year: 'numeric' })
 
-    if (!monthlyMap.has(monthKey {
-      monthlyMap.set(monthKey, { income: 0, expenses: 0 }
+    if (!monthlyMap.has(monthKey)) {
+      monthlyMap.set(monthKey, { income: 0, expenses: 0 })
     }
 
-    const data = monthlyMap.get(monthKey!
-    if (t.credit > 0 {
+    const data = monthlyMap.get(monthKey)!
+    if (t.credit > 0) {
       data.income += t.credit
     }
-    if (t.debit > 0 {
+    if (t.debit > 0) {
       data.expenses += t.debit
     }
-  }
+  })
 
-  return Array.from(monthlyMap.entries(.map(([month, data] => ({
+  return Array.from(monthlyMap.entries()).map(([month, data]) => ({
     month,
     income: data.income,
     expenses: data.expenses,
-  }
+  }))
 }
-
-
-
-
-
-
-

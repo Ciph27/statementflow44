@@ -2,7 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { BarChart3 } from 'lucide-react'
 
-export default function Reports( {
+export default function Reports() {
   return (
     <div className="space-y-6">
       <div>
@@ -30,12 +30,5 @@ export default function Reports( {
         </CardContent>
       </Card>
     </div>
-  
+  )
 }
-
-
-
-
-
-
-

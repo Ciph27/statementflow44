@@ -11,76 +11,76 @@ import { useNavigate } from 'react-router-dom'
 import { Settings, User, Lock, LogOut, KeyRound } from 'lucide-react'
 
 
-export default function SettingsPage( {
-  const navigate = useNavigate(
-  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false
-  const [currentPassword, setCurrentPassword] = useState(''
-  const [newPassword, setNewPassword] = useState(''
-  const [confirmPassword, setConfirmPassword] = useState(''
-  const [updatingPassword, setUpdatingPassword] = useState(false
-  const [profile, setProfile] = useState<any>(null
-  const [loading, setLoading] = useState(true
+export default function SettingsPage() {
+  const navigate = useNavigate()
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false)
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [updatingPassword, setUpdatingPassword] = useState(false)
+  const [profile, setProfile] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
-  useEffect(( => {
-    const fetchProfile = async ( => {
+  useEffect(() => {
+    const fetchProfile = async () => {
       try {
-        const user = (await supabase.auth.getUser(.data.user
-        if (!user throw new Error('Not authenticated'
+        const user = (await supabase.auth.getUser()).data.user
+        if (!user) throw new Error('Not authenticated')
 
         const { data, error } = await supabase
-          .from('profiles'
-          .select('*'
-          .eq('id', user.id
-          .single(
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single()
 
-        if (error throw error
-        setProfile(data
-      } catch (error {
-        console.error('Failed to fetch profile:', error
+        if (error) throw error
+        setProfile(data)
+      } catch (error) {
+        console.error('Failed to fetch profile:', error)
       } finally {
-        setLoading(false
+        setLoading(false)
       }
     }
 
-    fetchProfile(
-  }, []
+    fetchProfile()
+  }, [])
 
-  const handlePasswordUpdate = async (e: React.FormEvent => {
-    e.preventDefault(
+  const handlePasswordUpdate = async (e: React.FormEvent) => {
+    e.preventDefault()
     
-    if (newPassword !== confirmPassword {
-      alert('Passwords do not match'
+    if (newPassword !== confirmPassword) {
+      alert('Passwords do not match')
       return
     }
 
-    if (newPassword.length < 6 {
-      alert('Password must be at least 6 characters'
+    if (newPassword.length < 6) {
+      alert('Password must be at least 6 characters')
       return
     }
 
-    setUpdatingPassword(true
+    setUpdatingPassword(true)
     try {
-      const result = await updatePassword(newPassword
-      if (result.error {
-        alert(result.error.message
+      const result = await updatePassword(newPassword)
+      if (result.error) {
+        alert(result.error.message)
       } else {
-        alert('Password updated successfully'
-        setPasswordDialogOpen(false
-        setCurrentPassword(''
-        setNewPassword(''
-        setConfirmPassword(''
+        alert('Password updated successfully')
+        setPasswordDialogOpen(false)
+        setCurrentPassword('')
+        setNewPassword('')
+        setConfirmPassword('')
       }
-    } catch (error {
-      console.error('Failed to update password:', error
-      alert('Failed to update password'
+    } catch (error) {
+      console.error('Failed to update password:', error)
+      alert('Failed to update password')
     } finally {
-      setUpdatingPassword(false
+      setUpdatingPassword(false)
     }
   }
 
-  const handleSignOut = async ( => {
-    await signOut(
-    router.navigate({ to: '/auth' }
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/auth')
   }
 
   return (
@@ -120,7 +120,7 @@ export default function SettingsPage( {
             <div>
               <Label>Account Created</Label>
               <div className="mt-1 p-2 bg-surface-alt rounded border border-border">
-                {profile?.created_at ? new Date(profile.created_at.toLocaleDateString( : 'N/A'}
+                {profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : 'N/A'}
               </div>
             </div>
           </div>
@@ -161,7 +161,7 @@ export default function SettingsPage( {
                       id="newPassword"
                       type="password"
                       value={newPassword}
-                      onChange={(e => setNewPassword(e.target.value}
+                      onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Enter new password"
                       required
                       minLength={6}
@@ -173,7 +173,7 @@ export default function SettingsPage( {
                       id="confirmPassword"
                       type="password"
                       value={confirmPassword}
-                      onChange={(e => setConfirmPassword(e.target.value}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Confirm new password"
                       required
                       minLength={6}
@@ -213,12 +213,5 @@ export default function SettingsPage( {
         </CardContent>
       </Card>
     </div>
-  
+  )
 }
-
-
-
-
-
-
-

@@ -6,51 +6,51 @@ import { Label } from '../components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { signIn, signUp, signInWithGoogle } from '../lib/auth'
 
-export default function AuthPage( {
-  const navigate = useNavigate(
-  const [isSignUp, setIsSignUp] = useState(false
-  const [email, setEmail] = useState(''
-  const [password, setPassword] = useState(''
-  const [fullName, setFullName] = useState(''
-  const [error, setError] = useState(''
-  const [loading, setLoading] = useState(false
+export default function AuthPage() {
+  const navigate = useNavigate()
+  const [isSignUp, setIsSignUp] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [fullName, setFullName] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent => {
-    e.preventDefault(
-    setError(''
-    setLoading(true
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
 
     try {
-      if (isSignUp {
-        const result = await signUp(email, password, fullName
-        if (result.error {
-          setError(result.error.message
+      if (isSignUp) {
+        const result = await signUp(email, password, fullName)
+        if (result.error) {
+          setError(result.error.message)
         } else {
-          router.navigate({ to: '/dashboard' }
+          navigate('/dashboard')
         }
       } else {
-        const result = await signIn(email, password
-        if (result.error {
-          setError(result.error.message
+        const result = await signIn(email, password)
+        if (result.error) {
+          setError(result.error.message)
         } else {
-          router.navigate({ to: '/dashboard' }
+          navigate('/dashboard')
         }
       }
-    } catch (err {
-      setError('An unexpected error occurred'
+    } catch (err) {
+      setError('An unexpected error occurred')
     } finally {
-      setLoading(false
+      setLoading(false)
     }
   }
 
-  const handleGoogleSignIn = async ( => {
+  const handleGoogleSignIn = async () => {
     try {
-      const result = await signInWithGoogle(
-      if (result.error {
-        setError(result.error.message
+      const result = await signInWithGoogle()
+      if (result.error) {
+        setError(result.error.message)
       }
-    } catch (err {
-      setError('An unexpected error occurred'
+    } catch (err) {
+      setError('An unexpected error occurred')
     }
   }
 
@@ -72,18 +72,18 @@ export default function AuthPage( {
                   id="fullName"
                   type="text"
                   value={fullName}
-                  onChange={(e => setFullName(e.target.value}
+                  onChange={(e) => setFullName(e.target.value)}
                   required
                 />
               </div>
-            }
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e => setEmail(e.target.value}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -93,7 +93,7 @@ export default function AuthPage( {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e => setPassword(e.target.value}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
@@ -101,7 +101,7 @@ export default function AuthPage( {
               <div className="text-sm text-danger bg-danger-light p-3 rounded-md">
                 {error}
               </div>
-            }
+            )}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Processing...' : isSignUp ? 'Sign Up' : 'Sign In'}
             </Button>
@@ -146,7 +146,7 @@ export default function AuthPage( {
           <div className="mt-4 text-center text-sm">
             <button
               type="button"
-              onClick={( => setIsSignUp(!isSignUp}
+              onClick={() => setIsSignUp(!isSignUp)}
               className="text-accent hover:underline"
             >
               {isSignUp
@@ -163,12 +163,5 @@ export default function AuthPage( {
         </CardContent>
       </Card>
     </div>
-  
+  )
 }
-
-
-
-
-
-
-
